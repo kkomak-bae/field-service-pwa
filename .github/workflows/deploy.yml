@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies (if any)
+      run: |
+        # PWA는 정적 파일이므로 별도 빌드 과정이 없습니다
+        echo "Static PWA - no build required"
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        publish_branch: gh-pages
+        force_orphan: true
+        
+    - name: Show deployment URL
+      run: |
+        echo "🚀 PWA deployed successfully!"
+        echo "📱 Mobile URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        echo "💻 Desktop URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        echo "📋 PWA Install URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" 
