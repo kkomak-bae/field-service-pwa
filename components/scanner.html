@@ -1,0 +1,367 @@
+<!-- 바코드 스캔 컴포넌트 -->
+<!-- PRD 요구사항: F001 - QR/바코드 스캐닝 -->
+
+<div class="scanner-component">
+    <div class="scanner-header">
+        <h2>바코드/QR코드 스캔</h2>
+        <p class="scanner-description">장비나 부품의 바코드를 스캔하여 정보를 자동으로 입력합니다.</p>
+    </div>
+
+    <div class="scanner-main">
+        <!-- 스캔 뷰포트 -->
+        <div class="scanner-viewport">
+            <div id="interactive" class="viewport-container">
+                <div class="scanner-overlay">
+                    <div class="scanner-frame">
+                        <div class="corner top-left"></div>
+                        <div class="corner top-right"></div>
+                        <div class="corner bottom-left"></div>
+                        <div class="corner bottom-right"></div>
+                    </div>
+                    <div class="scanner-instruction">
+                        바코드를 프레임 안에 위치시켜주세요
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 스캔 컨트롤 -->
+        <div class="scanner-controls">
+            <button id="start-scan" class="btn primary">
+                <span class="icon">📱</span>
+                스캔 시작
+            </button>
+            <button id="stop-scan" class="btn secondary" disabled>
+                <span class="icon">⏹️</span>
+                스캔 중지
+            </button>
+            <button id="switch-camera" class="btn secondary">
+                <span class="icon">🔄</span>
+                카메라 전환
+            </button>
+        </div>
+
+        <!-- 스캔 결과 -->
+        <div class="scanner-results">
+            <h3>스캔 결과</h3>
+            <div id="scan-output" class="results-container">
+                <div class="empty-state">
+                    <span class="icon">📱</span>
+                    <p>바코드를 스캔해주세요</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 스캔 히스토리 -->
+        <div class="scanner-history">
+            <h3>최근 스캔 기록</h3>
+            <div id="scan-history" class="history-container">
+                <div class="empty-state">
+                    <span class="icon">📋</span>
+                    <p>스캔 기록이 없습니다</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 지원 형식 정보 -->
+    <div class="scanner-info">
+        <h4>지원하는 바코드 형식</h4>
+        <div class="format-list">
+            <span class="format-item">Code 128</span>
+            <span class="format-item">QR Code</span>
+            <span class="format-item">EAN-13</span>
+            <span class="format-item">EAN-8</span>
+            <span class="format-item">Code 39</span>
+            <span class="format-item">UPC-A</span>
+            <span class="format-item">UPC-E</span>
+        </div>
+    </div>
+</div>
+
+<style>
+.scanner-component {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.scanner-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.scanner-header h2 {
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.scanner-description {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.scanner-viewport {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.viewport-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.scanner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.scanner-frame {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    border: 2px solid rgba(37, 99, 235, 0.8);
+    border-radius: 8px;
+}
+
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #2563eb;
+}
+
+.corner.top-left {
+    top: -3px;
+    left: -3px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 8px 0 0 0;
+}
+
+.corner.top-right {
+    top: -3px;
+    right: -3px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 8px 0 0;
+}
+
+.corner.bottom-left {
+    bottom: -3px;
+    left: -3px;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0 8px;
+}
+
+.corner.bottom-right {
+    bottom: -3px;
+    right: -3px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 8px 0;
+}
+
+.scanner-instruction {
+    margin-top: 20px;
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.scanner-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.scanner-controls .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.scanner-controls .btn.primary {
+    background: #2563eb;
+    color: white;
+}
+
+.scanner-controls .btn.primary:hover {
+    background: #1e40af;
+}
+
+.scanner-controls .btn.secondary {
+    background: white;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+}
+
+.scanner-controls .btn.secondary:hover {
+    background: #f8fafc;
+}
+
+.scanner-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.scanner-results {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-results h3 {
+    color: #1e293b;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.results-container {
+    min-height: 100px;
+}
+
+.scan-result-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.scan-code {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 5px;
+}
+
+.scan-format {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.scan-time {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.scanner-history {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-history h3 {
+    color: #1e293b;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.history-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.scanner-info {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-info h4 {
+    color: #1e293b;
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.format-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.format-item {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #94a3b8;
+}
+
+.empty-state .icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .scanner-component {
+        padding: 15px;
+    }
+    
+    .scanner-viewport {
+        height: 250px;
+    }
+    
+    .scanner-frame {
+        width: 200px;
+        height: 120px;
+    }
+    
+    .scanner-controls {
+        flex-direction: column;
+    }
+    
+    .scanner-controls .btn {
+        width: 100%;
+    }
+}
+</style> 
